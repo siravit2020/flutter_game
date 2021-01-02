@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../variable.dart';
 
-
 class SecondPage extends StatefulWidget {
   SecondPage({Key key}) : super(key: key);
 
@@ -28,6 +27,7 @@ class _SecondPageState extends State<SecondPage> {
               onPressed: () {
                 Navigator.pushNamed(context, '/main');
                 countBomb = 10;
+                level = "Easy";
               },
               child: Text(
                 "Easy",
@@ -46,6 +46,7 @@ class _SecondPageState extends State<SecondPage> {
               onPressed: () {
                 Navigator.pushNamed(context, '/main');
                 countBomb = 20;
+                level = "Normal";
               },
               child: Text(
                 "Normal",
@@ -64,6 +65,7 @@ class _SecondPageState extends State<SecondPage> {
               onPressed: () {
                 Navigator.pushNamed(context, '/main');
                 countBomb = 30;
+                level = "Hard";
               },
               child: Text(
                 "Hard",

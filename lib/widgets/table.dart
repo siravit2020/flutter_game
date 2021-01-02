@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
 import '../provider.dart';
 import '../variable.dart';
+import 'custom_dialog_box.dart';
+import 'package:flutter_game/tranfer.dart';
 
 class TableShow extends StatefulWidget {
   TableShow({Key key}) : super(key: key);
@@ -173,9 +175,6 @@ class _TableState extends State<TableShow> {
         }
       } catch (e) {}
     } else if (newList[point] == 10) {
-      // showMyDialog(context, () {
-      //   setState(() {});
-      // });
       counter.stop();
       showResultTrue = true;
       showResult(() {
@@ -184,11 +183,12 @@ class _TableState extends State<TableShow> {
       print("end");
     } else if (visible.where((item) => item == false).length - countBomb == 0) {
       print("finish");
-      _incrementCounter();
+      
       showResultTrue = true;
       showResult(() {
         setState(() {});
       });
+      _incrementCounter();
     }
     setState(() {});
   }
@@ -197,8 +197,28 @@ class _TableState extends State<TableShow> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (counter.counter < best) {
       best = counter.counter;
-      await prefs.setInt('counter', counter.counter);
+      await prefs.setInt(level, counter.counter);
       counter.stop();
+       showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomDialogBox(
+                level: level,
+                currentTime: tranfer(counter.counter),
+                bestTime: tranfer(best),
+                title: "New record");
+          });
+    }
+    else{
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomDialogBox(
+                level: level,
+                currentTime: tranfer(counter.counter),
+                bestTime: tranfer(best),
+                title: "Excellent");
+          });
     }
   }
 }

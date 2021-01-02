@@ -22,6 +22,7 @@ class _HomePage extends State<HomePage> {
     createBorderEmpty();
     counter = context.read<CounterProvider>();
     flag = context.read<FlagProvider>();
+    themeModel = context.read<MyThemeModel>();
     flag.setFlag(countBomb);
     counter.increment();
     super.initState();
@@ -49,9 +50,6 @@ class _HomePage extends State<HomePage> {
               ),
               onPressed: () {
                 if (showResultTrue) {
-                  context.read<MyThemeModel>().setTheme();
-                  counter.cancel();
-                  counter.increment();
                   restart(() {
                     setState(() {});
                   });

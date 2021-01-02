@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../provider.dart';
 import '../variable.dart';
 
 void createTable() {
@@ -95,7 +94,10 @@ void restart(Function function) {
   newisSelected = false;
   color = Colors.white;
   showResultTrue = false;
-
+  flag.setFlag(countBomb);
+  counter.cancel();
+  counter.increment();
+  themeModel.setTheme();
   createTable();
   createNumber();
   createBorderEmpty();
@@ -121,9 +123,6 @@ Future<void> showMyDialog(BuildContext context, Function function) async {
             child: Text('ok'),
             onPressed: () {
               Navigator.of(context).pop();
-              context.read<MyThemeModel>().setTheme();
-              counter.cancel();
-              counter.increment();
               restart(() {
                 function();
               });

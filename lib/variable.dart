@@ -49,18 +49,19 @@ List<int> maxRight = [
 ];
 List<bool> visible = List<bool>(countBox);
 List<bool> flagList = List<bool>(countBox);
-
+String level;
 bool newisSelected = false;
 Color color = Colors.white;
 int countBomb = 10;
 bool showResultTrue = false;
 CounterProvider counter;
 FlagProvider flag;
+MyThemeModel themeModel;
 Future<int> getBestTime() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int time = (prefs.getInt('counter') ?? 600);
-      //prefs.clear();
-      return time;
-    }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int time = (prefs.getInt(level) ?? 600);
+  //prefs.clear();
+  return time;
+}
 
 int best = 0;

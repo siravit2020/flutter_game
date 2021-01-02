@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_game/tranfer.dart';
 import 'package:provider/provider.dart';
 import '../provider.dart';
 import '../variable.dart';
@@ -25,16 +26,7 @@ class Header extends StatelessWidget {
                   ),
                 ),
                 Consumer<CounterProvider>(builder: (context, data, child) {
-                  int secound = data.counter % 60;
-                  int minute = data.counter ~/ 60;
-                  String textTime = '$minute : $secound';
-                  if (minute < 10 && secound < 10) {
-                    textTime = '0$minute : 0$secound';
-                  } else if (minute < 10) {
-                    textTime = '0$minute : $secound';
-                  } else if (secound < 10) {
-                    textTime = '$minute : 0$secound';
-                  }
+                  String textTime = tranfer(data.counter);
                   return Text(
                     textTime,
                     style: TextStyle(
@@ -49,14 +41,13 @@ class Header extends StatelessWidget {
             ),
             FlatButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  
+                borderRadius: BorderRadius.circular(30.0),
+              ),
               color: Theme.of(context).buttonColor,
               textColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               onPressed: () {
-                context.read<MyThemeModel>().changeTheme();
+                themeModel.changeTheme();
                 newisSelected = !newisSelected;
                 function();
               },
@@ -80,7 +71,6 @@ class Header extends StatelessWidget {
                 ],
               ),
             ),
-         
             SizedBox(
               width: 15,
             ),
@@ -99,16 +89,7 @@ class Header extends StatelessWidget {
                     String textTime = "";
                     if (snapshot.data != null) {
                       best = snapshot.data;
-                      int secound = snapshot.data % 60;
-                      int minute = snapshot.data ~/ 60;
-                      textTime = '$minute : $secound';
-                      if (minute < 10 && secound < 10) {
-                        textTime = '0$minute : 0$secound';
-                      } else if (minute < 10) {
-                        textTime = '0$minute : $secound';
-                      } else if (secound < 10) {
-                        textTime = '$minute : 0$secound';
-                      }
+                      textTime = tranfer(snapshot.data);
                     }
                     return Text(
                       textTime,
