@@ -117,16 +117,11 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                 
               });});
             },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Play Again',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                )
-              ],
+            child: Text(
+              'Play Again',
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
           ),
         ],

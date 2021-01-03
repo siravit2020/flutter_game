@@ -2,6 +2,7 @@ import 'package:flutter_game/widgets/create_table.dart';
 import 'package:flutter_game/widgets/header.dart';
 import 'package:flutter_game/widgets/level_dialog.dart';
 import 'package:flutter_game/widgets/logo_text.dart';
+import 'package:flutter_game/widgets/restart_dialog.dart';
 import 'package:flutter_game/widgets/table.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class _HomePage extends State<HomePage> {
           elevation: 0,
           leading: IconButton(
             splashRadius: 20,
-            icon: Icon(Icons.settings, color: Colors.deepPurple),
+            icon: Icon(Icons.settings, 
+            color: Colors.deepPurple),
             onPressed: () {
               showDialog(
                   context: context,
@@ -62,8 +64,13 @@ class _HomePage extends State<HomePage> {
                   });
                 } else {
                   counter.stop();
-                  showMyDialog(context, () {
-                    setState(() {});
+                  // showMyDialog(context, () {
+                  //   setState(() {});
+                  // });
+                   showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return restartDialog();
                   });
                 }
               },
