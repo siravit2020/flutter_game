@@ -1,5 +1,6 @@
 import 'package:flutter_game/widgets/create_table.dart';
 import 'package:flutter_game/widgets/header.dart';
+import 'package:flutter_game/widgets/level_dialog.dart';
 import 'package:flutter_game/widgets/logo_text.dart';
 import 'package:flutter_game/widgets/table.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,13 @@ class _HomePage extends State<HomePage> {
           leading: IconButton(
             splashRadius: 20,
             icon: Icon(Icons.settings, color: Colors.deepPurple),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return LevelDialogBox();
+                  });
+            },
           ),
           actions: [
             IconButton(
@@ -53,7 +60,6 @@ class _HomePage extends State<HomePage> {
                   restart(() {
                     setState(() {});
                   });
-                  
                 } else {
                   counter.stop();
                   showMyDialog(context, () {
