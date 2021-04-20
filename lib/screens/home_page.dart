@@ -1,7 +1,7 @@
 import 'package:flutter_game/widgets/create_table.dart';
 import 'package:flutter_game/widgets/header.dart';
 import 'package:flutter_game/widgets/level_dialog.dart';
-import 'package:flutter_game/widgets/logo_text.dart';
+import 'package:flutter_game/screens/splash/widgets/logo.dart';
 import 'package:flutter_game/widgets/restart_dialog.dart';
 import 'package:flutter_game/widgets/table.dart';
 import 'package:provider/provider.dart';

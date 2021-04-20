@@ -88,9 +88,9 @@ void createBorderEmpty() {
 }
 
 void restart(Function function) {
-  newList = List<int>(countBox);
-  visible = List<bool>(countBox);
-  flagList = List<bool>(countBox);
+  newList = List.filled(countBox,null);
+  visible = List.filled(countBox,null);
+  flagList = List.filled(countBox,null);
   newisSelected = false;
   color = Colors.white;
   showResultTrue = false;

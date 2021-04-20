@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_game/widgets/logo_text.dart';
+import 'package:flutter_game/screens/splash/widgets/logo.dart';
 
-class FirstPage extends StatefulWidget {
-  FirstPage({Key key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key key}) : super(key: key);
 
   @override
-  _FirstPageState createState() => _FirstPageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _FirstPageState extends State<FirstPage> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +28,16 @@ class _FirstPageState extends State<FirstPage> {
               height: 20,
             ),
             GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/second');
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/play.svg",
-                  height: 30,
-                  width: 30,
-                  color: Colors.deepPurple[700],
-                )),
+              onTap: () {
+                Navigator.pushNamed(context, '/second');
+              },
+              child: SvgPicture.asset(
+                "assets/icons/play.svg",
+                height: 30,
+                width: 30,
+                color: Colors.deepPurple[700],
+              ),
+            ),
           ],
         ),
       ),

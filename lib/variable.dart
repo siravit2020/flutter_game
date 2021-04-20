@@ -7,8 +7,8 @@ const countBox = 204;
 const countRow = 17;
 const countColumn = 12;
 
-List<int> newList = List<int>(countBox);
-List<int> newAdd = List<int>(countBox);
+List<int> newList = List.filled(countBox,null);
+List<int> newAdd = List.filled(countBox,null);
 List<int> maxLeft = [
   0,
   12,
@@ -47,8 +47,8 @@ List<int> maxRight = [
   191,
   203
 ];
-List<bool> visible = List<bool>(countBox);
-List<bool> flagList = List<bool>(countBox);
+List<bool> visible = List.filled(countBox,null);
+List<bool> flagList = List.filled(countBox,null);
 String level;
 bool newisSelected = false;
 Color color = Colors.white;

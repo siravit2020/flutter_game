@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:provider/provider.dart';
 import 'provider.dart';
-import 'screen/screen.dart';
+import 'screens/screen.dart';
 import 'theme.dart';
 
 void main() {
@@ -11,25 +13,29 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CounterProvider(counter: 0)),
-        ChangeNotifierProvider(create: (_) => FlagProvider(flag: 0)),
-      ],
-      child: ChangeNotifierProvider(
-        create: (context) => MyThemeModel(),
-        child: Consumer<MyThemeModel>(
-          builder: (context, theme, child) => MaterialApp(
-            theme: themeData(context),
-            darkTheme: redThemeData(context),
-            themeMode: theme.isLightTheme ? ThemeMode.light : ThemeMode.dark,
-            debugShowCheckedModeBanner: false,
-            initialRoute: '/',
-            routes: {
-              '/': (context) => FirstPage(),
-              '/second': (context) => SecondPage(),
-              '/main': (context) => HomePage(),
-            },
+    //Set the fit size (fill in the screen size of the device in the design,in dp)
+    return ScreenUtilInit(
+      designSize: Size(412, 870),
+      builder: () => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => CounterProvider(counter: 0)),
+          ChangeNotifierProvider(create: (_) => FlagProvider(flag: 0)),
+        ],
+        child: ChangeNotifierProvider(
+          create: (context) => MyThemeModel(),
+          child: Consumer<MyThemeModel>(
+            builder: (context, theme, child) => MaterialApp(
+              theme: themeData(context),
+              darkTheme: redThemeData(context),
+              themeMode: theme.isLightTheme ? ThemeMode.light : ThemeMode.dark,
+              debugShowCheckedModeBanner: false,
+              initialRoute: '/',
+              routes: {
+                '/': (context) => SplashScreen(),
+                '/second': (context) => LevelScreen(),
+                '/main': (context) => HomePage(),
+              },
+            ),
           ),
         ),
       ),
