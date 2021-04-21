@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_game/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../variable.dart';
+
 class LevelButton extends StatelessWidget {
   const LevelButton({
     Key key,
@@ -25,9 +28,13 @@ class LevelButton extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/main');
-        countBomb = bomb;
-        level = title;
+        Timer(Duration(milliseconds: 400), () {
+          Navigator.pushNamed(context, '/main');
+        });
+        context.read<MainProvider>()
+          ..countBomb = bomb
+          ..level = title
+          ..flag = bomb;
       },
       child: Text(
         title,

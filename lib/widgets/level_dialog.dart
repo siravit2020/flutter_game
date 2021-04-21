@@ -2,19 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/variable.dart';
-import 'package:flutter_game/widgets/create_table.dart';
+import 'package:flutter_game/provider.dart';
 
-class LevelDialogBox extends StatefulWidget {
+class LevelDialogBox extends StatelessWidget {
   LevelDialogBox({
     Key key,
   }) : super(key: key);
 
-  @override
-  _LevelDialogBoxState createState() => _LevelDialogBoxState();
-}
-
-class _LevelDialogBoxState extends State<LevelDialogBox> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -24,7 +18,7 @@ class _LevelDialogBoxState extends State<LevelDialogBox> {
     );
   }
 
-  contentBox(context) {
+  contentBox(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -34,23 +28,15 @@ class _LevelDialogBoxState extends State<LevelDialogBox> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Expanded(
-              child: FlatButton(
-                textColor: Colors.purpleAccent,
-                minWidth: double.infinity,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  countBomb = 10;
-                  level = "Easy";
-                  restart(() {
-                    setState(() {});
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Easy",
-                ),
-              ),
+            ButtonLevel(
+              title: 'Easy',
+              count: 10,
+              color: Colors.purpleAccent,
+            ),
+            ButtonLevel(
+              title: 'Hard',
+              count: 30,
+              color: Colors.deepPurple[900],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -58,49 +44,54 @@ class _LevelDialogBoxState extends State<LevelDialogBox> {
                 height: 0,
               ),
             ),
-            Expanded(
-              child: FlatButton(
-                textColor: Colors.deepPurple,
-                minWidth: double.infinity,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  countBomb = 20;
-                  level = "Normal";
-                  restart(() {
-                    setState(() {});
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Normal",
-                ),
-              ),
+            ButtonLevel(
+              title: 'Normal',
+              count: 20,
+              color: Colors.deepPurple,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Divider(
                 height: 0,
-              ),
-            ),
-            Expanded(
-              child: FlatButton(
-                textColor: Colors.deepPurple[900],
-                minWidth: double.infinity,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  countBomb = 30;
-                  level = "Hard";
-                  restart(() {
-                    setState(() {});
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Hard",
-                ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonLevel extends StatelessWidget {
+  const ButtonLevel({
+    Key key,
+    this.title,
+    this.count,
+    this.color,
+  }) : super(key: key);
+  final String title;
+  final int count;
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    
+    return Expanded(
+      child: TextButton(
+        style: TextButton.styleFrom(
+          minimumSize: Size(double.infinity, 0),
+          padding: EdgeInsets.all(8.0),
+          primary: color,
+          backgroundColor: Colors.white,
+        ),
+        onPressed: () {
+          context.read<MainProvider>()
+          ..countBomb = count
+          ..level = title
+          ..restart();
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          title,
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,17 +8,14 @@ import '../variable.dart';
 import 'custom_dialog_box.dart';
 import 'package:flutter_game/tranfer.dart';
 
-class TableShow extends StatefulWidget {
+class TableShow extends StatelessWidget {
   TableShow({Key key}) : super(key: key);
 
   @override
-  _TableState createState() => _TableState();
-}
-
-class _TableState extends State<TableShow> {
-  @override
   Widget build(BuildContext context) {
-    FlagProvider flag = Provider.of<FlagProvider>(context);
+    MainProvider provider = context.watch<MainProvider>();
+    if (provider.finsih) _showDialogFinish(context);
+    print('rebuild table ${Random().nextInt(90)}');
     return Column(
       children: [
         Container(
@@ -28,52 +27,14 @@ class _TableState extends State<TableShow> {
             children: List.generate(countBox, (index) {
               Color colorText;
 
-              if (newList[index] == 1) {
-                colorText = Colors.purpleAccent;
-              }
-              if (newList[index] == 2) {
-                colorText = Colors.purpleAccent[700];
-              }
-              if (newList[index] == 3) {
-                colorText = Colors.deepPurpleAccent;
-              }
-              if (newList[index] == 4) {
-                colorText = Colors.deepPurpleAccent[700];
-              }
-              if (newList[index] == 5) {
-                colorText = Colors.purple[900];
-              }
-              if (newList[index] == 6) {
-                colorText = Colors.deepPurple[900];
-              }
-              if (newList[index] == 7) {
-                colorText = Colors.indigo[900];
-              }
+              colorText = provider.colorProcess(index);
+
               return InkWell(
                 onLongPress: () {
-                  if (!visible[index]) {
-                    flagList[index] = !flagList[index];
-                    if (flagList[index]) {
-                      flag.decrement();
-                    } else
-                      flag.increment();
-                    setState(() {});
-                  }
+                  provider.onLongPress(index);
                 },
                 onTap: () {
-                  if (newisSelected && !visible[index]) {
-                    flagList[index] = !flagList[index];
-                    if (flagList[index]) {
-                      flag.decrement();
-                    } else
-                      flag.increment();
-                  } else if (!newisSelected &&
-                      !visible[index] &&
-                      !flagList[index]) {
-                    visible[index] = true;
-                    check(index);
-                  }
-                  setState(() {});
+                  provider.onTab(index);
                 },
                 child: Ink(
                   child: Container(
@@ -81,13 +42,14 @@ class _TableState extends State<TableShow> {
                       borderRadius: new BorderRadius.all(
                         const Radius.circular(4.0),
                       ),
-                      color: ((newList[index] == 10) && showResultTrue)
+                      color: ((provider.newList[index] == 10) &&
+                              provider.showResultTrue)
                           ? Colors.deepPurpleAccent.withOpacity(0.3)
-                          : (newList[index] != 8)
-                              ? color
+                          : (provider.newList[index] != 8)
+                              ? provider.color
                               : Colors.deepPurple[400].withOpacity(0.1),
                       boxShadow: [
-                        if ((newList[index] != 8))
+                        if ((provider.newList[index] != 8))
                           BoxShadow(
                             color:
                                 Theme.of(context).primaryColor.withOpacity(0.2),
@@ -101,12 +63,12 @@ class _TableState extends State<TableShow> {
                     child: Stack(
                       children: [
                         Center(
-                          child: visible[index]
-                              ? newList[index] != 10
+                          child: provider.visible[index]
+                              ? provider.newList[index] != 10
                                   ? Text(
-                                      (newList[index] != 0 &&
-                                              newList[index] != 8)
-                                          ? '${newList[index]}'
+                                      (provider.newList[index] != 0 &&
+                                              provider.newList[index] != 8)
+                                          ? '${provider.newList[index]}'
                                           : '',
                                       style: TextStyle(color: colorText),
                                     )
@@ -114,7 +76,7 @@ class _TableState extends State<TableShow> {
                                       height: 16, width: 16)
                               : SizedBox(),
                         ),
-                        if (flagList[index])
+                        if (provider.flagList[index])
                           Center(
                             child: Icon(
                               Icons.flag,
@@ -134,98 +96,42 @@ class _TableState extends State<TableShow> {
     );
   }
 
-  void check(int point) {
-    if (newList[point] == 0 || newList[point] == 8) {
-      newList[point] = 8;
-
-      if (!maxRight.contains(point)) {
-        try {
-          visible[point + 1] = true;
-          if (newList[point + 1] == 0) {
-            newList[point + 1] = 8;
-            visible[point] = true;
-            check(point + 1);
-          }
-        } catch (e) {}
-      }
-      if (!maxLeft.contains(point)) {
-        try {
-          visible[point - 1] = true;
-          if (newList[point - 1] == 0) {
-            newList[point - 1] = 8;
-            visible[point] = true;
-            check(point - 1);
-          }
-        } catch (e) {}
-      }
-      try {
-        visible[point - 12] = true;
-        if (newList[point - 12] == 0) {
-          newList[point - 12] = 8;
-          visible[point] = true;
-          check(point - 12);
-        }
-      } catch (e) {}
-      try {
-        visible[point + 12] = true;
-        if (newList[point + 12] == 0) {
-          newList[point + 12] = 8;
-          visible[point] = true;
-          check(point + 12);
-        }
-      } catch (e) {}
-    } else if (newList[point] == 10) {
-      counter.stop();
-      showResultTrue = true;
-      showResult(() {
-        setState(() {});
-      });
-      print("end");
-    } else if (visible.where((item) => item == false).length - countBomb == 0) {
-      print("finish");
-      
-      showResultTrue = true;
-      showResult(() {
-        setState(() {});
-      });
-      _incrementCounter();
-    }
-    setState(() {});
-  }
-
-  _incrementCounter() async {
+  _showDialogFinish(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (counter.counter < best) {
-      best = counter.counter;
-      await prefs.setInt(level, counter.counter);
-      counter.stop();
-       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomDialogBox(
-                level: level,
-                currentTime: tranfer(counter.counter),
-                bestTime: tranfer(best),
-                title: "New record");
-          });
-    }
-    else{
+    MainProvider provider = context.read<MainProvider>();
+    CountTimeProvider time = context.read<CountTimeProvider>();
+    if (time.counter < provider.best) {
+      provider.best = time.counter;
+      await prefs.setInt(provider.level, time.counter);
+      time.stop();
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomDialogBox(
-                level: level,
-                currentTime: tranfer(counter.counter),
-                bestTime: tranfer(best),
-                title: "Excellent");
-          });
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialogBox(
+              level: provider.level,
+              currentTime: tranfer(time.counter),
+              bestTime: tranfer(provider.best),
+              title: "New record");
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialogBox(
+              level: provider.level,
+              currentTime: tranfer(time.counter),
+              bestTime: tranfer(provider.best),
+              title: "Excellent");
+        },
+      );
     }
   }
 }
 
-void showResult(Function function) {
+void showResult(BuildContext context) {
+  MainProvider provider = context.read<MainProvider>();
   for (int i = 0; i < 204; i++) {
-    visible[i] = true;
+    provider.visible[i] = true;
   }
-  function();
 }

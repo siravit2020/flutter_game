@@ -2,19 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/variable.dart';
-import 'package:flutter_game/widgets/create_table.dart';
+import 'package:flutter_game/provider.dart';
 
-class restartDialog extends StatefulWidget {
-  restartDialog({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _restartDialogState createState() => _restartDialogState();
-}
-
-class _restartDialogState extends State<restartDialog> {
+class RestartDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -24,13 +14,13 @@ class _restartDialogState extends State<restartDialog> {
     );
   }
 
-  contentBox(context) {
+  contentBox(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(10,25,10,25),
+      padding: EdgeInsets.fromLTRB(10, 25, 10, 25),
       decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: new BorderRadius.all(const Radius.circular(20.0)),
-            ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
       width: 200,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -42,52 +32,53 @@ class _restartDialogState extends State<restartDialog> {
               color: Colors.deepPurple,
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                color: Colors.grey[100],
-                textColor: Colors.black,
-                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  restart(() {
-                    setState(() {});
-                  });
-                },
-                child: Text(
-                  'Yes',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              SizedBox(width: 20,),
-              FlatButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                color: Colors.grey[100],
-                textColor: Colors.black,
-                padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  counter.increment();
-                },
-                child: Text(
-                  'No',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-              ),
+              ButtonDialog(yes: true),
+              SizedBox(width: 20),
+              ButtonDialog(yes: false),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ButtonDialog extends StatelessWidget {
+  const ButtonDialog({
+    Key key,
+    this.yes,
+  }) : super(key: key);
+  final bool yes;
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+        primary: Colors.black,
+        backgroundColor: Colors.grey[100],
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+        if (yes) {
+          context.read<CountTimeProvider>().cancel();
+          context.read<MainProvider>().restart();
+          
+        }
+      },
+      child: Text(
+        yes ? 'Yes' : 'No',
+        style: TextStyle(
+          fontSize: 14,
+        ),
       ),
     );
   }

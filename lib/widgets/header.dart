@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_game/tranfer.dart';
 import 'package:provider/provider.dart';
 import '../provider.dart';
-import '../variable.dart';
 
 class Header extends StatelessWidget {
-  final Function function;
-
-  const Header({Key key, @required this.function}) : super(key: key);
+  const Header({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    MainProvider provider = context.read<MainProvider>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -25,7 +25,7 @@ class Header extends StatelessWidget {
                     color: Colors.green,
                   ),
                 ),
-                Consumer<CounterProvider>(builder: (context, data, child) {
+                Consumer<CountTimeProvider>(builder: (context, data, child) {
                   String textTime = tranfer(data.counter);
                   return Text(
                     textTime,
@@ -39,36 +39,43 @@ class Header extends StatelessWidget {
             SizedBox(
               width: 15,
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                padding: EdgeInsets.all(8.0),
+                primary: Colors.black,
+                backgroundColor: Theme.of(context).buttonColor,
               ),
-              color: Theme.of(context).buttonColor,
-              textColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
               onPressed: () {
-                themeModel.changeTheme();
-                newisSelected = !newisSelected;
-                function();
+                provider.newisSelected = !provider.newisSelected;
+                context.read<MyThemeModel>().changeTheme();
               },
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.flag,
-                    color: Colors.red,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Consumer<FlagProvider>(builder: (context, data, child) {
-                    return Text(
-                      '${data.flag}',
-                      style: TextStyle(
-                        fontSize: 16,
+              child: Consumer<MainProvider>(
+                builder: (context, data, child) {
+                  return Row(
+                    children: [
+                      Icon(
+                        Icons.flag,
+                        color: Colors.red,
                       ),
-                    );
-                  }),
-                ],
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Consumer<MainProvider>(
+                        builder: (context, data, child) {
+                          return Text(
+                            '${data.flag}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
             SizedBox(
@@ -83,21 +90,11 @@ class Header extends StatelessWidget {
                     color: Colors.orange,
                   ),
                 ),
-                FutureBuilder<int>(
-                  future: getBestTime(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    String textTime = "";
-                    if (snapshot.data != null) {
-                      best = snapshot.data;
-                      textTime = tranfer(snapshot.data);
-                    }
-                    return Text(
-                      textTime,
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    );
-                  },
+                Text(
+                  tranfer(provider.time),
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
                 )
               ],
             ),

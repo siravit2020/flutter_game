@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
       designSize: Size(412, 870),
       builder: () => MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => CounterProvider(counter: 0)),
-          ChangeNotifierProvider(create: (_) => FlagProvider(flag: 0)),
+          ChangeNotifierProvider(create: (_) => MainProvider()),
+          ChangeNotifierProvider(create: (_) => CountTimeProvider()),
+
         ],
         child: ChangeNotifierProvider(
           create: (context) => MyThemeModel(),

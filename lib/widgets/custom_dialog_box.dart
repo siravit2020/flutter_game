@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_game/provider.dart';
 import 'package:flutter_game/widgets/create_table.dart';
 
 class CustomDialogBox extends StatefulWidget {
@@ -69,33 +70,23 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
               Column(
                 children: [
                   Icon(Icons.signal_cellular_alt_rounded),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Text(widget.level)
                 ],
               ),
-              SizedBox(
-                width: 50,
-              ),
+              SizedBox(width: 50),
               Column(
                 children: [
                   Icon(Icons.access_time),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Text(widget.currentTime)
                 ],
               ),
-              SizedBox(
-                width: 50,
-              ),
+              SizedBox(width: 50),
               Column(
                 children: [
                   Icon(Icons.emoji_events_outlined),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: 10),
                   Text(widget.bestTime)
                 ],
               )
@@ -113,9 +104,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             onPressed: () {
               Navigator.of(context).pop();
-              restart((){setState(() {
-                
-              });});
+              Provider.of<MainProvider>(context).restart();
             },
             child: Text(
               'Play Again',
