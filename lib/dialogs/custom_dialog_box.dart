@@ -2,16 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/provider.dart';
-import 'package:flutter_game/widgets/create_table.dart';
+import 'package:flutter_game/providers/provider.dart';
+import 'package:flutter_game/dialogs/gameover_dialog.dart';
 
-class CustomDialogBox extends StatefulWidget {
+class FinishDialogBox extends StatefulWidget {
   final String level;
   final String currentTime;
   final String bestTime;
   final String title;
 
-  CustomDialogBox({
+  FinishDialogBox({
     Key key,
     @required this.level,
     @required this.currentTime,
@@ -20,10 +20,10 @@ class CustomDialogBox extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomDialogBoxState createState() => _CustomDialogBoxState();
+  _FinishDialogBoxState createState() => _FinishDialogBoxState();
 }
 
-class _CustomDialogBoxState extends State<CustomDialogBox> {
+class _FinishDialogBoxState extends State<FinishDialogBox> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -36,7 +36,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
     );
   }
 
-  contentBox(context) {
+  contentBox(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
       decoration: BoxDecoration(
@@ -102,9 +102,11 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             color: Theme.of(context).buttonColor,
             textColor: Colors.black,
             padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-            onPressed: () {
+            onPressed: () async{
               Navigator.of(context).pop();
-              Provider.of<MainProvider>(context).restart();
+              await context.read<MainProvider>().reset();
+              context.read<CountTimeProvider>().cancel();
+              context.read<CountTimeProvider>().countTime();
             },
             child: Text(
               'Play Again',
@@ -116,5 +118,6 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
         ],
       ),
     );
+    
   }
 }

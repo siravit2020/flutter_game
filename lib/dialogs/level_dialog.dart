@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/provider.dart';
+import 'package:flutter_game/providers/provider.dart';
 
 class LevelDialogBox extends StatelessWidget {
   LevelDialogBox({
@@ -74,7 +74,6 @@ class ButtonLevel extends StatelessWidget {
   final Color color;
   @override
   Widget build(BuildContext context) {
-    
     return Expanded(
       child: TextButton(
         style: TextButton.styleFrom(
@@ -83,11 +82,14 @@ class ButtonLevel extends StatelessWidget {
           primary: color,
           backgroundColor: Colors.white,
         ),
-        onPressed: () {
+        onPressed: () async {
+          context.read<CountTimeProvider>().cancel();
+          
           context.read<MainProvider>()
-          ..countBomb = count
-          ..level = title
-          ..restart();
+            ..countBomb = count
+            ..flag = count
+            ..level = title;
+          await context.read<MainProvider>().reset();
           Navigator.of(context).pop();
         },
         child: Text(

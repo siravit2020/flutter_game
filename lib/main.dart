@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:provider/provider.dart';
-import 'provider.dart';
+import 'providers/provider.dart';
 import 'screens/screen.dart';
-import 'theme.dart';
+import 'themes/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,24 +20,17 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => MainProvider()),
           ChangeNotifierProvider(create: (_) => CountTimeProvider()),
-
+          ChangeNotifierProvider(create: (_) => MyThemeModel())
         ],
-        child: ChangeNotifierProvider(
-          create: (context) => MyThemeModel(),
-          child: Consumer<MyThemeModel>(
-            builder: (context, theme, child) => MaterialApp(
-              theme: themeData(context),
-              darkTheme: redThemeData(context),
-              themeMode: theme.isLightTheme ? ThemeMode.light : ThemeMode.dark,
-              debugShowCheckedModeBanner: false,
-              initialRoute: '/',
-              routes: {
-                '/': (context) => SplashScreen(),
-                '/second': (context) => LevelScreen(),
-                '/main': (context) => HomePage(),
-              },
-            ),
-          ),
+        child: MaterialApp(
+          theme: themeData(context),
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => SplashScreen(),
+            '/second': (context) => LevelScreen(),
+            '/main': (context) => HomePage(),
+          },
         ),
       ),
     );

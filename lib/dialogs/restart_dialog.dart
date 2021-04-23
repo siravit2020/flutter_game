@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_game/provider.dart';
+import 'package:flutter_game/providers/provider.dart';
 
 class RestartDialog extends StatelessWidget {
   @override
@@ -66,11 +66,11 @@ class ButtonDialog extends StatelessWidget {
         primary: Colors.black,
         backgroundColor: Colors.grey[100],
       ),
-      onPressed: () {
+      onPressed: () async{
         Navigator.of(context).pop();
         if (yes) {
           context.read<CountTimeProvider>().cancel();
-          context.read<MainProvider>().restart();
+          await context.read<MainProvider>().reset();
           
         }
       },

@@ -20,7 +20,7 @@ class _LevelScreenState extends State<LevelScreen> {
             LevelButton(
               title: 'Easy',
               color: Colors.purpleAccent,
-              bomb: 10,
+              bomb: 2,
             ),
             LevelButton(
               title: 'Normal',

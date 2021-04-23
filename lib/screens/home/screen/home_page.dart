@@ -1,13 +1,25 @@
-import 'package:flutter_game/provider.dart';
-import 'package:flutter_game/widgets/header.dart';
-import 'package:flutter_game/widgets/level_dialog.dart';
+import 'package:flutter_game/providers/provider.dart';
+import 'package:flutter_game/screens/home/widgets/header.dart';
+import 'package:flutter_game/dialogs/level_dialog.dart';
 import 'package:flutter_game/screens/splash/widgets/logo.dart';
-import 'package:flutter_game/widgets/restart_dialog.dart';
-import 'package:flutter_game/widgets/table.dart';
+import 'package:flutter_game/dialogs/restart_dialog.dart';
+import 'package:flutter_game/screens/home/widgets/table.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void dispose() {
+    super.dispose();
+    // context.read<MainProvider>().clear();
+    // context.read<CountTimeProvider>().clear();
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: FutureProvider<bool>(
@@ -17,9 +29,10 @@ class HomePage extends StatelessWidget {
           print('rebuild');
           final value = context.watch<bool>();
           if (value) {
+            if (context.read<CountTimeProvider>().t != null)
+              context.read<CountTimeProvider>().clear();
             context.read<CountTimeProvider>().countTime();
-            return
-            Scaffold(
+            return Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.white,
                 elevation: 0,
@@ -43,9 +56,9 @@ class HomePage extends StatelessWidget {
                       color: Colors.deepPurple,
                       size: 24,
                     ),
-                    onPressed: () {
-                      context.read<CountTimeProvider>().stop();
-                      if (!context.read<MainProvider>().checkRestat())
+                    onPressed: () async {
+                      if (!context.read<MainProvider>().showResultTrue) {
+                        context.read<CountTimeProvider>().stop();
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -54,6 +67,11 @@ class HomePage extends StatelessWidget {
                         ).then((value) {
                           context.read<CountTimeProvider>().countTime();
                         });
+                      } else {
+                        context.read<CountTimeProvider>().cancel();
+                        await context.read<MainProvider>().reset();
+                        context.read<CountTimeProvider>().countTime();
+                      }
                     },
                   )
                 ],
@@ -65,15 +83,34 @@ class HomePage extends StatelessWidget {
               body: Column(
                 children: [
                   Header(),
-                  Container(
+                  Expanded(
                     child: TableShow(),
                   ),
                 ],
               ),
             );
           }
-          return Center(
-            child: Text('Loading'),
+
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.purple,
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Text(
+                    'Loading',
+                    style: TextStyle(
+                      color: Colors.deepPurple[900],
+                    ),
+                  )
+                ],
+              ),
+            ),
           );
         },
       ),

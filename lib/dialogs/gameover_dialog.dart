@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_game/provider.dart';
+import 'package:flutter_game/providers/provider.dart';
 
 Future<void> showMyDialog(BuildContext context, Function function) async {
   MainProvider provider = context.read<MainProvider>();
@@ -21,7 +21,7 @@ Future<void> showMyDialog(BuildContext context, Function function) async {
             child: Text('ok'),
             onPressed: () {
               Navigator.of(context).pop();
-              provider.restart();
+              provider.reset();
             },
           ),
           TextButton(

@@ -20,7 +20,7 @@ class _LogoState extends State<Logo> {
         text('i', Colors.purpleAccent),
         text('n', Colors.deepPurple),
         text('e', Colors.purpleAccent[400]),
-        text('s', Colors.purpleAccent[900]),
+        text('s', Colors.deepPurple[900]),
         text('w', Colors.purple),
         text('e', Colors.deepPurple[700]),
         text('e', Colors.purpleAccent),
