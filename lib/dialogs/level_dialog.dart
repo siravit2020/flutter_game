@@ -30,12 +30,10 @@ class LevelDialogBox extends StatelessWidget {
           children: [
             ButtonLevel(
               title: 'Easy',
-              count: 10,
               color: Colors.purpleAccent,
             ),
             ButtonLevel(
               title: 'Hard',
-              count: 30,
               color: Colors.deepPurple[900],
             ),
             Padding(
@@ -46,7 +44,6 @@ class LevelDialogBox extends StatelessWidget {
             ),
             ButtonLevel(
               title: 'Normal',
-              count: 20,
               color: Colors.deepPurple,
             ),
             Padding(
@@ -66,11 +63,10 @@ class ButtonLevel extends StatelessWidget {
   const ButtonLevel({
     Key key,
     this.title,
-    this.count,
     this.color,
   }) : super(key: key);
   final String title;
-  final int count;
+
   final Color color;
   @override
   Widget build(BuildContext context) {
@@ -84,13 +80,9 @@ class ButtonLevel extends StatelessWidget {
         ),
         onPressed: () async {
           context.read<CountTimeProvider>().cancel();
-          
-          context.read<MainProvider>()
-            ..countBomb = count
-            ..flag = count
-            ..level = title;
-          await context.read<MainProvider>().reset();
+          await context.read<MainProvider>().changeLevel(title);
           Navigator.of(context).pop();
+          
         },
         child: Text(
           title,

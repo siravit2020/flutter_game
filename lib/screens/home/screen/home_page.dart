@@ -7,19 +7,7 @@ import 'package:flutter_game/screens/home/widgets/table.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void dispose() {
-    super.dispose();
-    // context.read<MainProvider>().clear();
-    // context.read<CountTimeProvider>().clear();
-  }
-
+class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: FutureProvider<bool>(
@@ -40,12 +28,15 @@ class _HomePageState extends State<HomePage> {
                   splashRadius: 20,
                   icon: Icon(Icons.settings, color: Colors.deepPurple),
                   onPressed: () {
+                    context.read<CountTimeProvider>().stop();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return LevelDialogBox();
                       },
-                    );
+                    ).then((value) {
+                      context.read<CountTimeProvider>().countTime();
+                    });
                   },
                 ),
                 actions: [
@@ -84,7 +75,10 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Header(),
                   Expanded(
-                    child: TableShow(),
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 400),
+                      child: TableShow(),
+                    ),
                   ),
                 ],
               ),
@@ -98,10 +92,12 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.purple,
+                      Colors.purpleAccent,
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     'Loading',
                     style: TextStyle(

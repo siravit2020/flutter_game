@@ -36,7 +36,7 @@ class CountTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CountTimeProvider>();
-    String textTime = tranfer(provider.counter);
+    String textTime = dateTotime(provider.counter);
     return Row(
       children: [
         Padding(
@@ -64,7 +64,7 @@ class Flag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<MyThemeModel>();
+    final color = context.watch<ColorThemeProvider>();
     return TextButton(
       style: TextButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -73,11 +73,12 @@ class Flag extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         primary: Colors.black,
         backgroundColor:
-            provider.flag ? Colors.red[100] : Theme.of(context).buttonColor,
+            color.flag ? Colors.red[100] : Theme.of(context).buttonColor,
       ),
       onPressed: () {
         MainProvider provider = context.read<MainProvider>();
         provider.newisSelected = !provider.newisSelected;
+        color.changeColor();
       },
       child: Consumer<MainProvider>(
         builder: (context, data, child) {
@@ -122,7 +123,7 @@ class BestTime extends StatelessWidget {
           ),
         ),
         Text(
-          tranfer(provider.bestTime),
+          dateTotime(provider.bestTime),
           style: TextStyle(
             fontSize: 16,
           ),

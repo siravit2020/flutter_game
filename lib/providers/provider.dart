@@ -47,11 +47,16 @@ class MainProvider extends ChangeNotifier {
   List<int> maxRight = [];
   List<bool> visible;
   List<bool> flagList;
+  int countBox;
   String level;
   bool newisSelected;
   int countBomb = 10;
   bool showResultTrue;
   int bestTime = 0;
+
+  MainProvider() {
+    countBox = countColumn * countRow;
+  }
 
   Future<void> getBestTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -69,6 +74,25 @@ class MainProvider extends ChangeNotifier {
   void decrement() {
     flag--;
     notifyListeners();
+  }
+
+  Future changeLevel(String value) async {
+    int count;
+    switch (value) {
+      case 'Easy':
+        count = 10;
+        break;
+      case 'Normal':
+        count = 20;
+        break;
+      case 'Hard':
+        count = 30;
+        break;
+    }
+    countBomb = count;
+    flag = count;
+    level = value;
+    await reset();
   }
 
   Future<void> createTable() async {
@@ -145,6 +169,7 @@ class MainProvider extends ChangeNotifier {
     showResultTrue = false;
     await createTable();
     await createNumber();
+    await getBestTime();
     notifyListeners();
   }
 
@@ -268,7 +293,7 @@ class MainProvider extends ChangeNotifier {
   }
 }
 
-class MyThemeModel extends ChangeNotifier {
+class ColorThemeProvider extends ChangeNotifier {
   bool _flag = false;
 
   void changeColor() {

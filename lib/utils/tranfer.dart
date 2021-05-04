@@ -1,4 +1,4 @@
-String tranfer(data) {
+String dateTotime(data) {
   int secound = data % 60;
   int minute = data ~/ 60;
   String textTime = '$minute : $secound';

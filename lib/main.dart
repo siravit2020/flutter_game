@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => MainProvider()),
           ChangeNotifierProvider(create: (_) => CountTimeProvider()),
-          ChangeNotifierProvider(create: (_) => MyThemeModel())
+          ChangeNotifierProvider(create: (_) => ColorThemeProvider())
         ],
         child: MaterialApp(
           theme: themeData(context),
